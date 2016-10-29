@@ -1,0 +1,48 @@
+{% load i18n staticfiles misago_json %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{% spaceless %}{% block title %}{{ misago_settings.forum_name }}{% endblock %}{% endspaceless %}</title>
+    <meta name="description" content="{% spaceless %}{% block meta-description %}{% endblock %}{% endspaceless %}">
+    <base href="{% url 'misago:index' %}">
+    <link href="{% static 'misago/css/misago.css' %}" rel="stylesheet">
+    {% include "misago/favicons.html" %}
+  </head>
+  <body>
+
+    <div id="auth-message-mount"></div>
+    <div id="snackbar-mount"></div>
+
+{#    <div style="background: #d00; padding: 12px 18px; text-align: center; color: #fff; text-shadow: 1px 1px 0px #300;">#}
+{#      <strong>Warning:</strong> This is unreleased version of Misago. There's no support or update path available for it!#}
+{#    </div>#}
+
+    {% include "misago/jumbotron.html" %}
+    {% include "misago/navbar.html" %}
+
+    <div id="page-mount">
+      {% block content %}{% endblock content %}
+    </div>
+
+    {% include "misago/posting.html" %}
+    {% include "misago/footer.html" %}
+    {% include "misago/auth.html" %}
+
+    <div class="modal fade" id="modal-mount" tabindex="-1" role="dialog" aria-labelledby="misago-modal-label"></div>
+
+    <script type="text/javascript" src="/django-i18n.js"></script>
+    {% if LANGUAGE_CODE != "en-us" %}
+    <script type="text/javascript" src="/moment-i18n.js"></script>
+    {% endif %}
+    <script type="text/javascript" src="{% static 'misago/js/vendor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'misago/js/misago.js' %}"></script>
+    {% include "misago/scripts.html" %}
+    <script type="text/javascript">
+      misago.init({{ frontend_context|as_json }});
+    </script>
+
+  </body>
+</html>
